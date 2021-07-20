@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hw_sql</title>
+<style>
+* {box-sizing: border-box}
+body {font-family: "Lato", sans-serif;}
+/* Стиль вкладок */
+.tab {
+  float: left;
+  /* border: 1px solid #ccc; */
+  background-color: #f1f1f1;
+  width: 20%;
+  height: 600px;
+}
+/* Стиль кнопок внутри вкладки */
+.tab button {
+  display: block;
+  background-color: inherit;
+  color: black;
+  padding: 22px 16px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 17px;
+}
+/* Изменение цвета фона кнопок при наведении курсора мыши */
+.tab button:hover {
+  background-color: #ddd;
+}
+/* Создание активного/текущего класса "tab button" */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Стиль содержимого вкладки */
+.tabcontent {
+  float: left;
+  padding: 0px 12px;
+  /* border: 1px solid #ccc; */
+  width: 80%;
+  border-left: none;
+  height: 600px;
+  display: none;
+}
+
+/* Очистить всплывающие окна после вкладки */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+</style>
+</head>
+<body>
+
+<h1>Домашние работы</h1>
+
+
+<div class="tab">
+  <button class="tablinks" onmouseover="openCity(event, 'London')">Домашка_1607</button>
+  <button class="tablinks" onmouseover="openCity(event, 'Paris')">Домашка_1807</button>
+  <button class="tablinks" onmouseover="openCity(event, 'Tokyo')">Домашка_2607</button>
+</div>
+
+<div id="London" class="tabcontent">
+    <h2 style="opacity: 0.3">Домашка_1607</h2>
+    <p><a href="img/Структура.png">Структура</a></p>
+    <p><a href="img/Запросы_создание.png">Создание</a></p>
+    <p><a href="img/Запросы_наполнение.png">Наполнение</a></p>
+    <p><a href="img/Запросы аггрегация.png">Запрос с аггрегацией</a></p>
+</div>
+
+<div id="Paris" class="tabcontent">
+    <h2 style="opacity: 0.3">Домашка_1807</h2>
+    <p><a href="img/GROUP_BY.png">1. Группировки по неключевому атрибуту с помощью  GROUP BY</a></p>
+    <p><a href="img/Запросы аггрегация.png">2. Условия с использование функции агрегирования через ключевое слово HAVING</a></p>
+    <p><a href="img/UNION.png">3.1 Объединения результатов запросов <b>(UNION)</b> и объединение таблиц (JOIN)</a></p>
+    <p><a href="img/JOIN.png">3.2 Объединения результатов запросов (UNION) и объединение таблиц <b>(JOIN)</b></a></p>
+    <p><a href="img/SELECT_SELECT_HAVING.png">4. Любой подзапрос (SELECT ... (SELECT...))</a></p>
+</div>
+
+<div id="Tokyo" class="tabcontent">
+    <h2 style="opacity: 0.3">Домашка_2607</h2>
+    <p>По sql файлу из Teams запустить у себя все 4 скрипта
+        <br>для проверки sqlalchemy после настройки подключения
+        <br>к своей <a href="base/db_hw_2607.sql">базе данных</a>
+    </p>
+    <p1><a href="img/al_classic.png">#1</a></p1>
+    <p1><a href="img/al_decl.png">#2</a></p1>
+    <p1><a href="img/db_test.png">#3</a></p1>
+    <p></p>
+    <p>Создать таблицы <a href="base/db_hw_2607.sql">базе данных</a> <a href="code/hw_2607.py">декларативным способом</a> (на основе классов)</p>
+    <pre class="hljs" style="display: block; overflow-x: auto; padding: 0.5em; background: rgb(240, 240, 240) none repeat scroll 0% 0%; color: rgb(68, 68, 68);"><span class="hljs-string" style="color: rgb(136, 0, 0);">"""
+        Создать таблицы в базе данных декларативным способом (на основе классов) 
+        """</span>
+        <span class="hljs-keyword" style="font-weight: 700;">from</span> typing <span class="hljs-keyword" style="font-weight: 700;">import</span> ItemsView
+        <span class="hljs-keyword" style="font-weight: 700;">from</span> sqlalchemy <span class="hljs-keyword" style="font-weight: 700;">import</span> create_engine, MetaData, Table, Integer, String, \
+            Column, DateTime, ForeignKey, Numeric, CheckConstraint
+        <span class="hljs-keyword" style="font-weight: 700;">from</span> sqlalchemy <span class="hljs-keyword" style="font-weight: 700;">import</span> Column, ForeignKey, Integer, String  
+        <span class="hljs-keyword" style="font-weight: 700;">from</span> sqlalchemy.ext.declarative <span class="hljs-keyword" style="font-weight: 700;">import</span> declarative_base  
+        <span class="hljs-keyword" style="font-weight: 700;">from</span> sqlalchemy.orm <span class="hljs-keyword" style="font-weight: 700;">import</span> relationship  
+        <span class="hljs-keyword" style="font-weight: 700;">from</span> sqlalchemy <span class="hljs-keyword" style="font-weight: 700;">import</span> create_engine      
+        <span class="hljs-keyword" style="font-weight: 700;">from</span> datetime <span class="hljs-keyword" style="font-weight: 700;">import</span> datetime
+        <span class="hljs-keyword" style="font-weight: 700;">from</span> sqlalchemy.orm <span class="hljs-keyword" style="font-weight: 700;">import</span> Session, sessionmaker
+        
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># metadata = MetaData()</span>
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># engine = create_engine("mysql://mikhail:1234@127.0.0.1")</span>
+        
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># NEW_DB_NAME = 'database_name_03'</span>
+        
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># with engine.connect() as conn:</span>
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);">#     conn.execute("commit")</span>
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);">#     # Do not substitute user-supplied database names here.</span>
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);">#     conn.execute(f"CREATE DATABASE {NEW_DB_NAME}")</span>
+        
+        
+        engine = create_engine(<span class="hljs-string" style="color: rgb(136, 0, 0);">"mysql://mikhail:1234@127.0.0.1/database_name_03"</span>, echo=<span class="hljs-keyword" style="font-weight: 700;">True</span>)
+        
+        Base = declarative_base()  
+        
+        <span class="hljs-class"><span class="hljs-keyword" style="font-weight: 700;">class</span> <span class="hljs-title" style="color: rgb(136, 0, 0); font-weight: 700;">Customers</span><span class="hljs-params">(Base)</span>:</span>
+            __tablename__ = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Customers'</span>
+            
+            id_custom = Column( Integer, primary_key=<span class="hljs-keyword" style="font-weight: 700;">True</span>)
+            first_name = Column(String(<span class="hljs-number" style="color: rgb(136, 0, 0);">100</span>), nullable=<span class="hljs-keyword" style="font-weight: 700;">False</span>)
+            last_name = Column(String(<span class="hljs-number" style="color: rgb(136, 0, 0);">100</span>), nullable=<span class="hljs-keyword" style="font-weight: 700;">False</span>)
+            username = Column(String(<span class="hljs-number" style="color: rgb(136, 0, 0);">50</span>), nullable=<span class="hljs-keyword" style="font-weight: 700;">False</span>)
+            email = Column(String(<span class="hljs-number" style="color: rgb(136, 0, 0);">200</span>), nullable=<span class="hljs-keyword" style="font-weight: 700;">False</span>)
+            address = Column(String(<span class="hljs-number" style="color: rgb(136, 0, 0);">200</span>), nullable=<span class="hljs-keyword" style="font-weight: 700;">False</span>)
+            town = Column(String(<span class="hljs-number" style="color: rgb(136, 0, 0);">50</span>), nullable=<span class="hljs-keyword" style="font-weight: 700;">False</span>)
+            created_on = Column(DateTime(), default=datetime.now)
+            updated_on =Column(DateTime(), default=datetime.now, onupdate=datetime.now)
+            orders = relationship(<span class="hljs-string" style="color: rgb(136, 0, 0);">"Orders"</span>, backref=<span class="hljs-string" style="color: rgb(136, 0, 0);">'Customer'</span>)
+        
+        <span class="hljs-class"><span class="hljs-keyword" style="font-weight: 700;">class</span> <span class="hljs-title" style="color: rgb(136, 0, 0); font-weight: 700;">Items</span><span class="hljs-params">(Base)</span>:</span>
+            __tablename__ = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Items'</span>
+        
+            id = Column(Integer(), primary_key=<span class="hljs-keyword" style="font-weight: 700;">True</span>)
+            name = Column( String(<span class="hljs-number" style="color: rgb(136, 0, 0);">200</span>), nullable=<span class="hljs-keyword" style="font-weight: 700;">False</span>)
+            cost_price = Column(Numeric(<span class="hljs-number" style="color: rgb(136, 0, 0);">10</span>, <span class="hljs-number" style="color: rgb(136, 0, 0);">2</span>), nullable=<span class="hljs-keyword" style="font-weight: 700;">False</span>)
+            selling_price = Column(Numeric(<span class="hljs-number" style="color: rgb(136, 0, 0);">10</span>, <span class="hljs-number" style="color: rgb(136, 0, 0);">2</span>),  nullable=<span class="hljs-keyword" style="font-weight: 700;">False</span>)
+            quantity = Column( Integer(), nullable=<span class="hljs-keyword" style="font-weight: 700;">False</span>)
+            <span class="hljs-comment" style="color: rgb(136, 136, 136);"># CheckConstraint('quantity &gt; 0', name='quantity_check')</span>
+        
+        
+        <span class="hljs-class"><span class="hljs-keyword" style="font-weight: 700;">class</span> <span class="hljs-title" style="color: rgb(136, 0, 0); font-weight: 700;">Orders</span><span class="hljs-params">(Base)</span>:</span>
+            __tablename__ = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Orders"</span>
+        
+            id = Column( Integer(), primary_key=<span class="hljs-keyword" style="font-weight: 700;">True</span>)
+            customer_id = Column( ForeignKey(<span class="hljs-string" style="color: rgb(136, 0, 0);">'Customers.id_custom'</span>))
+            date_placed = Column( DateTime(), default=datetime.now)
+            date_shipped = Column( DateTime())
+        
+        
+        <span class="hljs-class"><span class="hljs-keyword" style="font-weight: 700;">class</span> <span class="hljs-title" style="color: rgb(136, 0, 0); font-weight: 700;">OrderLines</span><span class="hljs-params">(Base)</span>:</span>
+            __tablename__ = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Order_lines'</span>
+            id = Column( Integer(), primary_key=<span class="hljs-keyword" style="font-weight: 700;">True</span>)
+            order_id = Column( ForeignKey(<span class="hljs-string" style="color: rgb(136, 0, 0);">'Orders.id'</span>))
+            item_id = Column( ForeignKey(<span class="hljs-string" style="color: rgb(136, 0, 0);">'Items.id'</span>))
+            quantity = Column( Integer())
+            order = relationship(<span class="hljs-string" style="color: rgb(136, 0, 0);">"Orders"</span>, backref=<span class="hljs-string" style="color: rgb(136, 0, 0);">'order_lines'</span>)
+            item = relationship(<span class="hljs-string" style="color: rgb(136, 0, 0);">"Items"</span>)
+        
+        
+        
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># Base.metadata.create_all(engine)</span>
+        session = Session(bind=engine)
+        
+        c1 = Customers(
+            first_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Dmitriy'</span>,
+            last_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Yatsenko'</span>,
+            username = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Moseend'</span>,
+            email = <span class="hljs-string" style="color: rgb(136, 0, 0);">'moseend@mail.com'</span>,
+            address = <span class="hljs-string" style="color: rgb(136, 0, 0);">'trytrytrytr'</span>,
+            town = <span class="hljs-string" style="color: rgb(136, 0, 0);">'ytrtyrytrytrytr'</span>
+        )
+        
+        c2 = Customers(
+            first_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Valeriy'</span>,
+            last_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Golyshkin'</span>,
+            username = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Fortioneaks'</span>,
+            email = <span class="hljs-string" style="color: rgb(136, 0, 0);">'fortioneaks@gmail.com'</span>,
+            address = <span class="hljs-string" style="color: rgb(136, 0, 0);">'trytrytrytr'</span>,
+            town = <span class="hljs-string" style="color: rgb(136, 0, 0);">'ytrtyrytrytrytr'</span>
+        )
+        
+        c3 = Customers(
+            first_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Vadim"</span>, 
+            last_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Moiseenko"</span>, 
+            username = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Antence73"</span>, 
+            email = <span class="hljs-string" style="color: rgb(136, 0, 0);">"antence73@mail.com"</span>,
+            address = <span class="hljs-string" style="color: rgb(136, 0, 0);">'trytrytrytr'</span>,
+            town = <span class="hljs-string" style="color: rgb(136, 0, 0);">'ytrtyrytrytrytr'</span>
+        )
+        
+        c4 = Customers(          
+            first_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Vladimir"</span>, 
+            last_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Belousov"</span>, 
+            username = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Andescols"</span>, 
+            email = <span class="hljs-string" style="color: rgb(136, 0, 0);">"andescols@mail.com"</span>,
+            address = <span class="hljs-string" style="color: rgb(136, 0, 0);">'trytrytrytr'</span>,
+            town = <span class="hljs-string" style="color: rgb(136, 0, 0);">'ytrtyrytrytrytr'</span>       
+        )
+        
+        c5 = Customers(
+            first_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Tatyana"</span>, 
+            last_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Khakimova"</span>, 
+            username = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Caltin1962"</span>, 
+            email = <span class="hljs-string" style="color: rgb(136, 0, 0);">"caltin1962@mail.com"</span>,
+            address = <span class="hljs-string" style="color: rgb(136, 0, 0);">'trytrytrytr'</span>,
+            town = <span class="hljs-string" style="color: rgb(136, 0, 0);">'ytrtyrytrytrytr'</span>
+        )
+        
+        c6 = Customers(
+            first_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Pavel"</span>, 
+            last_name = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Arnautov"</span>, 
+            username = <span class="hljs-string" style="color: rgb(136, 0, 0);">"Lablen"</span>, 
+            email = <span class="hljs-string" style="color: rgb(136, 0, 0);">"lablen@mail.com"</span>,
+            address = <span class="hljs-string" style="color: rgb(136, 0, 0);">'trytrytrytr'</span>,
+            town = <span class="hljs-string" style="color: rgb(136, 0, 0);">'ytrtyrytrytrytr'</span>
+        )
+        
+        session.add_all([c1, c2, c3, c4, c5, c6])
+        session.commit()
+        
+        i1 = Items(name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Chair'</span>, cost_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">9.21</span>, selling_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">10.81</span>, quantity = <span class="hljs-number" style="color: rgb(136, 0, 0);">5</span>)
+        i2 = Items(name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Pen'</span>, cost_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">3.45</span>, selling_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">4.51</span>, quantity = <span class="hljs-number" style="color: rgb(136, 0, 0);">3</span>)
+        i3 = Items(name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Headphone'</span>, cost_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">15.52</span>, selling_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">16.81</span>, quantity = <span class="hljs-number" style="color: rgb(136, 0, 0);">50</span>)
+        i4 = Items(name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Travel Bag'</span>, cost_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">20.1</span>, selling_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">24.21</span>, quantity = <span class="hljs-number" style="color: rgb(136, 0, 0);">50</span>)
+        i5 = Items(name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Keyboard'</span>, cost_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">20.1</span>, selling_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">22.11</span>, quantity = <span class="hljs-number" style="color: rgb(136, 0, 0);">50</span>)
+        i6 = Items(name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Monitor'</span>, cost_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">200.14</span>, selling_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">212.89</span>, quantity = <span class="hljs-number" style="color: rgb(136, 0, 0);">50</span>)
+        i7 = Items(name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Watch'</span>, cost_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">100.58</span>, selling_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">104.41</span>, quantity = <span class="hljs-number" style="color: rgb(136, 0, 0);">50</span>)
+        i8 = Items(name = <span class="hljs-string" style="color: rgb(136, 0, 0);">'Water Bottle'</span>, cost_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">20.89</span>, selling_price = <span class="hljs-number" style="color: rgb(136, 0, 0);">25</span>, quantity = <span class="hljs-number" style="color: rgb(136, 0, 0);">50</span>)
+        
+        session.add_all([i1, i2, i3, i4, i5, i6, i7, i8])
+        session.commit()
+        
+        o1 = Orders(Customer=c1)
+        o2 = Orders(Customer=c2)
+        
+        line_item1 = OrderLines(order = o1, item = i1, quantity =  <span class="hljs-number" style="color: rgb(136, 0, 0);">3</span>)
+        line_item2 = OrderLines(order = o1, item = i2, quantity =  <span class="hljs-number" style="color: rgb(136, 0, 0);">2</span>)
+        line_item3 = OrderLines(order = o2, item = i1, quantity =  <span class="hljs-number" style="color: rgb(136, 0, 0);">1</span>)
+        line_item3 = OrderLines(order = o2, item = i2, quantity =  <span class="hljs-number" style="color: rgb(136, 0, 0);">4</span>)
+        
+        session.add_all([o1, o2])
+        
+        session.new
+        session.commit()
+        
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># o3 = Orders()</span>
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># orderline1 = OrderLines(item = i1, quantity = 5)</span>
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># orderline2 = OrderLines(item = i2, quantity = 10)</span>
+        
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># o3.line_items.append(orderline1)</span>
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># o3.line_items.append(orderline2)</span>
+        
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># session.add_all([o3,])</span>
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># session.new</span>
+        <span class="hljs-comment" style="color: rgb(136, 136, 136);"># session.commit()</span>
+        
+        
+        
+        </pre>
+
+  
+</div>
+
+<div class="clearfix"></div>
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+   
+</body>
+</html>
